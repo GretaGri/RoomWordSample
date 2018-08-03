@@ -15,7 +15,7 @@ import android.content.Context;
 // belong in the database and set the version number. When you modify the database schema, you'll
 // need to update the version number and define how to handle migrations
 // https://medium.com/google-developers/understanding-migrations-with-room-f01e04b07929.
-@Database(entities = {Word.class}, version = 1)
+@Database(entities = {Word.class}, version = 1,  exportSchema = false)
 public abstract class WordRoomDatabase extends RoomDatabase {
 
     // We define the DAOs that work with the database, add an abstract "getter" method for each @Dao.
