@@ -1,9 +1,11 @@
 package com.example.android.roomwordsample;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Room;
 
 import java.util.List;
 
@@ -38,9 +40,22 @@ public interface WordDao {
 
     //a method to get all the words, which returns list of words.
     //annotated with the @Query with provided SQL query adding ORDER BY, though it is not necessary
-    //for this app, but  by default, order is not guaranteed, and ordering makes testing straightforward.
+    //for this app, but  by default, order is not guaranteed, and ordering makes testing
+    // straightforward.
+    
     @Query("SELECT * from word_table ORDER BY word ASC")
-    List<Word> getAllWords();
+    LiveData<List<Word>> getAllWords(); //wrap the return value to LiveData, and then Room generates
+    // all necessary code to update the LiveData when the database is updated.
+
+    //TIPS:
+
+    //If you use LiveData independently from Room, you have to manage updating the data.
+    // LiveData has no publicly available methods to update the stored data.
+
+    //If you, the developer, want to update the stored data, you must use MutableLiveData instead of
+    // LiveData. The MutableLiveData class has two public methods that allow you to set the value of
+    // a LiveData object, setValue(T) and postValue(T). Usually, MutableLiveData is used in the
+    // ViewModel, and then the ViewModel only exposes immutable LiveData objects to the observers.
 
     // When inserting data, you can provide a conflict strategy.
     // As the word is primary key, and the default SQL behavior is ABORT, so that you cannot insert
