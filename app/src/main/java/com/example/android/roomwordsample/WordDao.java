@@ -42,7 +42,7 @@ public interface WordDao {
     //annotated with the @Query with provided SQL query adding ORDER BY, though it is not necessary
     //for this app, but  by default, order is not guaranteed, and ordering makes testing
     // straightforward.
-    
+
     @Query("SELECT * from word_table ORDER BY word ASC")
     LiveData<List<Word>> getAllWords(); //wrap the return value to LiveData, and then Room generates
     // all necessary code to update the LiveData when the database is updated.
